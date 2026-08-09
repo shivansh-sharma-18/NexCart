@@ -279,7 +279,7 @@ Follow these instructions to set up and run NexCart on your local system.
 ### Step 1: Clone Repository
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/shivansh-sharma-18/NexCart.git
 cd Cartivex
 ```
 
