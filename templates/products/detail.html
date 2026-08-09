@@ -1,0 +1,227 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ product.title }} — NexCart{% endblock %}
+
+{% block content %}
+<section class="section">
+  <div class="container">
+    <!-- Breadcrumb Nav -->
+    <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 2rem;" class="flex items-center gap-2 flex-wrap">
+      <a href="{% url 'core:home' %}">Home</a>
+      <span>/</span>
+      <a href="{% url 'products:catalog' %}">Catalog</a>
+      <span>/</span>
+      <a href="{% url 'products:catalog' %}?category={{ product.category.slug }}">{{ product.category.name }}</a>
+      <span>/</span>
+      <span style="color: var(--text-primary); font-weight: 600;">{{ product.title }}</span>
+    </div>
+
+    <!-- Product Grid -->
+    <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 3rem; margin-bottom: 4rem;">
+      <!-- Product Gallery Left -->
+      <div>
+        <div style="background: var(--bg-card); border-radius: var(--radius-lg); border: 1px solid var(--border-color); overflow: hidden; aspect-ratio: 1/1; position: relative;">
+          <img id="main-product-gallery" src="{{ product.primary_image_url }}" alt="{{ product.title }}" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease;" onmousemove="this.style.transform='scale(1.12)'" onmouseleave="this.style.transform='scale(1)'">
+        </div>
+      </div>
+
+      <!-- Product Information Right -->
+      <div>
+        <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
+          <span style="font-size: 0.8rem; font-weight: 800; text-transform: uppercase; color: var(--primary); background: var(--primary-light); padding: 0.25rem 0.65rem; border-radius: var(--radius-sm);">{{ product.brand }}</span>
+          <span style="font-size: 0.85rem; color: var(--text-muted);">SKU: {{ product.sku }}</span>
+        </div>
+
+        <h1 style="font-size: 2.25rem; font-weight: 900; color: var(--text-primary); margin-bottom: 0.75rem; line-height: 1.2;">{{ product.title }}</h1>
+
+        <!-- Rating summary -->
+        <div class="flex items-center gap-2 flex-wrap" style="margin-bottom: 1.5rem;">
+          <div style="color: #F59E0B; font-size: 1.1rem;">★★★★★</div>
+          <span style="font-weight: 700; font-size: 0.95rem;">{{ product.rating_avg }}</span>
+          <span style="color: var(--text-muted); font-size: 0.85rem;">({{ product.rating_count }} customer reviews)</span>
+          <span style="color: var(--border-color);">|</span>
+          <span style="color: var(--secondary); font-size: 0.85rem; font-weight: 700;">In Stock ({{ product.stock }} available)</span>
+        </div>
+
+        <!-- Pricing Box -->
+        <div style="background: var(--bg-card); border-radius: var(--radius-lg); border: 1px solid var(--border-color); padding: 1.25rem; margin-bottom: 1.75rem;" class="flex items-center justify-between flex-wrap gap-2">
+          <div>
+            <div class="price-main" style="font-size: 2rem; color: var(--primary);">${{ product.effective_price }}</div>
+            {% if product.discount_price %}
+            <div style="font-size: 0.95rem; color: var(--text-muted);">
+              MSRP <span class="price-original">${{ product.price }}</span> (Save ${{ product.savings_amount }})
+            </div>
+            {% endif %}
+          </div>
+          {% if product.discount_percent %}
+          <div style="background: var(--accent); color: white; font-weight: 800; padding: 0.5rem 1rem; border-radius: var(--radius-md); font-size: 0.9rem;">
+            SAVE {{ product.discount_percent }}%
+          </div>
+          {% endif %}
+        </div>
+
+        <!-- Description -->
+        <p style="color: var(--text-secondary); font-size: 1rem; margin-bottom: 2rem; line-height: 1.6;">
+          {{ product.description }}
+        </p>
+
+        <!-- Actions -->
+        <div class="flex items-center gap-3 flex-wrap" style="margin-bottom: 2rem;">
+          <div style="display: flex; align-items: center; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: var(--bg-subtle);">
+            <button onclick="let q = document.getElementById('item-qty'); if(parseInt(q.value)>1) q.value = parseInt(q.value)-1;" style="width: 2.5rem; height: 2.5rem; border: none; background: none; font-weight: 700; cursor: pointer; color: var(--text-primary);">-</button>
+            <input type="number" id="item-qty" value="1" min="1" max="{{ product.stock }}" style="width: 3rem; text-align: center; border: none; background: none; font-weight: 700; color: var(--text-primary);">
+            <button onclick="let q = document.getElementById('item-qty'); q.value = parseInt(q.value)+1;" style="width: 2.5rem; height: 2.5rem; border: none; background: none; font-weight: 700; cursor: pointer; color: var(--text-primary);">+</button>
+          </div>
+
+          <button class="btn btn-primary btn-lg flex-1" onclick="addToCart({{ product.id }}, parseInt(document.getElementById('item-qty').value))">
+            Add to Cart
+          </button>
+
+          <button class="icon-btn" style="width: 3.25rem; height: 3.25rem;" onclick="toggleWishlist({{ product.id }}, this)">
+            <svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+          </button>
+        </div>
+
+        <!-- Trust Badges -->
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 1rem; border-top: 1px solid var(--border-color); padding-top: 1.5rem;">
+          <div class="flex items-center gap-2">
+            <svg width="24" height="24" fill="none" stroke="var(--primary)" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+            <div style="font-size: 0.8rem; font-weight: 700;">Free Express Delivery</div>
+          </div>
+          <div class="flex items-center gap-2">
+            <svg width="24" height="24" fill="none" stroke="var(--secondary)" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+            <div style="font-size: 0.8rem; font-weight: 700;">2-Year Warranty</div>
+          </div>
+          <div class="flex items-center gap-2">
+            <svg width="24" height="24" fill="none" stroke="var(--accent)" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+            <div style="font-size: 0.8rem; font-weight: 700;">30-Day Guarantee</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Frequently Bought Together Bundle -->
+    {% if bought_together %}
+    <div style="background: var(--bg-card); border-radius: var(--radius-lg); border: 1px solid var(--border-color); padding: 2rem; margin-bottom: 4rem;">
+      <h3 style="font-size: 1.25rem; font-weight: 800; margin-bottom: 1.5rem;">Frequently Bought Together</h3>
+      <div class="flex items-center gap-4 flex-wrap">
+        <div class="flex items-center gap-3">
+          <img src="{{ product.primary_image_url }}" style="width: 80px; height: 80px; object-fit: cover; border-radius: var(--radius-md);" alt="{{ product.title }}">
+          <div>
+            <div style="font-weight: 700; font-size: 0.9rem;">{{ product.title }}</div>
+            <div style="color: var(--primary); font-weight: 800;">${{ product.effective_price }}</div>
+          </div>
+        </div>
+
+        <span style="font-size: 1.5rem; font-weight: 800; color: var(--text-muted);">+</span>
+
+        <div class="flex items-center gap-3">
+          <img src="{{ bought_together.primary_image_url }}" style="width: 80px; height: 80px; object-fit: cover; border-radius: var(--radius-md);" alt="{{ bought_together.title }}">
+          <div>
+            <div style="font-weight: 700; font-size: 0.9rem;">{{ bought_together.title }}</div>
+            <div style="color: var(--primary); font-weight: 800;">${{ bought_together.effective_price }}</div>
+          </div>
+        </div>
+
+        <div style="margin-left: auto;">
+          <button class="btn btn-secondary btn-sm" onclick="addToCart({{ product.id }}, 1); addToCart({{ bought_together.id }}, 1);">
+            Add Both to Cart
+          </button>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Technical Specifications Table & Reviews -->
+    <div style="border-top: 1px solid var(--border-color); padding-top: 3rem;">
+      <h2 style="font-size: 1.75rem; font-weight: 800; margin-bottom: 1.5rem;">Product Specifications</h2>
+      <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 4rem;">
+        <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.95rem;">
+          <tr style="border-bottom: 1px solid var(--border-color); background: var(--bg-subtle);">
+            <th style="padding: 1rem; width: 30%;">Brand</th>
+            <td style="padding: 1rem;">{{ product.brand }}</td>
+          </tr>
+          <tr style="border-bottom: 1px solid var(--border-color);">
+            <th style="padding: 1rem;">Category</th>
+            <td style="padding: 1rem;">{{ product.category.name }}</td>
+          </tr>
+          <tr style="border-bottom: 1px solid var(--border-color); background: var(--bg-subtle);">
+            <th style="padding: 1rem;">Model / SKU</th>
+            <td style="padding: 1rem;">{{ product.sku }}</td>
+          </tr>
+          <tr>
+            <th style="padding: 1rem;">Warranty</th>
+            <td style="padding: 1rem;">2 Years NexCart Global Warranty</td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- Reviews Section -->
+      <div>
+        <div class="flex-between flex-wrap gap-2" style="margin-bottom: 2rem;">
+          <div>
+            <h2 style="font-size: 1.75rem; font-weight: 800;">Verified Customer Reviews</h2>
+            <div style="color: var(--text-muted); font-size: 0.9rem;">Based on {{ product.rating_count }} customer ratings</div>
+          </div>
+          {% if user.is_authenticated %}
+          <button class="btn btn-outline btn-sm" onclick="document.getElementById('write-review-box').style.display='block'">Write a Review</button>
+          {% endif %}
+        </div>
+
+        {% if user.is_authenticated %}
+        <div id="write-review-box" class="product-card" style="padding: 1.5rem; margin-bottom: 2rem; display: none;">
+          <h3 style="font-size: 1.1rem; font-weight: 800; margin-bottom: 1rem;">Share Your Product Review</h3>
+          <form method="POST" action="{% url 'reviews:add_review' product.id %}">
+            {% csrf_token %}
+            <div class="grid" style="grid-template-columns: 120px 1fr; margin-bottom: 1rem;">
+              <div>
+                <label style="display: block; font-size: 0.85rem; font-weight: 700; margin-bottom: 0.25rem;">Rating</label>
+                <select name="rating" style="width: 100%; padding: 0.6rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color); background: var(--bg-subtle); color: var(--text-primary); font-weight: 700;">
+                  <option value="5">5 ★★★★★</option>
+                  <option value="4">4 ★★★★☆</option>
+                  <option value="3">3 ★★★☆☆</option>
+                  <option value="2">2 ★★☆☆☆</option>
+                  <option value="1">1 ★☆☆☆☆</option>
+                </select>
+              </div>
+              <div>
+                <label style="display: block; font-size: 0.85rem; font-weight: 700; margin-bottom: 0.25rem;">Headline</label>
+                <input type="text" name="headline" placeholder="e.g. Excellent build quality!" style="width: 100%; padding: 0.6rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color); background: var(--bg-subtle); color: var(--text-primary);">
+              </div>
+            </div>
+            <div style="margin-bottom: 1rem;">
+              <label style="display: block; font-size: 0.85rem; font-weight: 700; margin-bottom: 0.25rem;">Review Comments</label>
+              <textarea name="comment" rows="3" required placeholder="Describe your experience with this item..." style="width: 100%; padding: 0.6rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color); background: var(--bg-subtle); color: var(--text-primary);"></textarea>
+            </div>
+            <div class="flex gap-2">
+              <button type="submit" class="btn btn-primary btn-sm">Submit Review</button>
+              <button type="button" class="btn btn-outline btn-sm" onclick="document.getElementById('write-review-box').style.display='none'">Cancel</button>
+            </div>
+          </form>
+        </div>
+        {% endif %}
+
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+          {% for review in reviews %}
+          <div class="product-card" style="padding: 1.5rem;">
+            <div class="flex-between" style="margin-bottom: 0.75rem;">
+              <span style="font-weight: 700; font-size: 0.95rem;">{{ review.user.username }}</span>
+              <span style="color: #F59E0B;">★ {{ review.rating }}</span>
+            </div>
+            {% if review.headline %}
+            <div style="font-weight: 700; font-size: 0.9rem; margin-bottom: 0.35rem;">{{ review.headline }}</div>
+            {% endif %}
+            <p style="color: var(--text-secondary); font-size: 0.9rem;">"{{ review.comment }}"</p>
+          </div>
+          {% empty %}
+          <div style="padding: 2rem; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); text-align: center; color: var(--text-muted); grid-column: 1 / -1;">
+            No customer reviews yet. Be the first to leave a review for {{ product.title }}!
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

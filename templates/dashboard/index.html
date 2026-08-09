@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}NexCart Executive Seller Dashboard{% endblock %}
+
+{% block content %}
+<section class="section">
+  <div class="container">
+    <!-- Title Bar -->
+    <div class="flex-between flex-wrap gap-2" style="margin-bottom: 2rem;">
+      <div>
+        <span style="font-size: 0.8rem; font-weight: 800; color: var(--primary); text-transform: uppercase; letter-spacing: 0.05em;">Seller Analytics & Control Node</span>
+        <h1 style="font-size: 2.25rem; font-weight: 900; margin-top: 0.25rem;">NexCart Store Performance</h1>
+      </div>
+      <div class="flex gap-2 flex-wrap">
+        <a href="/admin/" class="btn btn-outline btn-sm">Django Native Admin</a>
+        <a href="/admin/products/product/add/" class="btn btn-primary btn-sm">+ Add New Product</a>
+      </div>
+    </div>
+
+    <!-- 1. KPI Cards Grid -->
+    <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin-bottom: 2.5rem;">
+      <div class="product-card" style="padding: 1.5rem;">
+        <div style="font-size: 0.8rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase;">Gross Platform Revenue</div>
+        <div style="font-family: 'Outfit', sans-serif; font-size: 2.2rem; font-weight: 900; color: var(--primary); margin: 0.35rem 0;">${{ total_revenue|default:"0.00" }}</div>
+        <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 700;">Total platform earnings</div>
+      </div>
+
+      <div class="product-card" style="padding: 1.5rem;">
+        <div style="font-size: 0.8rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase;">Total Orders Processed</div>
+        <div style="font-family: 'Outfit', sans-serif; font-size: 2.2rem; font-weight: 900; color: var(--text-primary); margin: 0.35rem 0;">{{ total_orders|default:"0" }}</div>
+        <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 700;">Completed order count</div>
+      </div>
+
+      <div class="product-card" style="padding: 1.5rem;">
+        <div style="font-size: 0.8rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase;">Active Customers</div>
+        <div style="font-family: 'Outfit', sans-serif; font-size: 2.2rem; font-weight: 900; color: var(--accent); margin: 0.35rem 0;">{{ active_customers|default:"0" }}</div>
+        <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 700;">Registered accounts</div>
+      </div>
+
+      <div class="product-card" style="padding: 1.5rem;">
+        <div style="font-size: 0.8rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase;">Active Catalog Items</div>
+        <div style="font-family: 'Outfit', sans-serif; font-size: 2.2rem; font-weight: 900; color: #818CF8; margin: 0.35rem 0;">{{ products_count|default:"6" }}</div>
+        <div style="font-size: 0.8rem; color: var(--secondary); font-weight: 700;">Verified products online</div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

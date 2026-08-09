@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="NexCart is a modern premium e-commerce platform offering verified authenticity, express shipping, and luxury tech & fashion essentials.">
+  <title>{% block title %}NexCart — Elevating Modern Commerce{% endblock %}</title>
+
+  <!-- Google Fonts & Styles -->
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+  <!-- Top Announcement Notification -->
+  <div class="nav-top-bar">
+    ✨ Welcome to NexCart | Launch Celebration Sale — Use promo code <strong>NEXCART15</strong> for 15% OFF your order!
+  </div>
+
+  <!-- Global Navigation Header -->
+  {% include 'navbar.html' %}
+
+  <!-- Django Messages Container -->
+  {% if messages %}
+  <div class="container" style="margin-top: 1.5rem;">
+    {% for message in messages %}
+    <div class="toast toast-{{ message.tags|default:'success' }}" style="margin-bottom: 0.5rem; position: static;">
+      <div class="flex items-center gap-2">
+        <span style="font-weight: 800;">ℹ</span>
+        <span>{{ message }}</span>
+      </div>
+      <button onclick="this.parentElement.remove()" style="background:none; border:none; color:inherit; cursor:pointer;">&times;</button>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <!-- Main Page Content Block -->
+  <main id="main-content">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- Quick View Modal Component -->
+  {% include 'quick_view.html' %}
+
+  <!-- Global Footer -->
+  {% include 'footer.html' %}
+
+  <!-- Dynamic Toast Container -->
+  <div id="toast-container"></div>
+
+  <!-- Scripts -->
+  <script src="{% static 'js/main.js' %}"></script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

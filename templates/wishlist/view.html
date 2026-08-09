@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Saved Wishlist — NexCart{% endblock %}
+
+{% block content %}
+<section class="section">
+  <div class="container">
+    <div style="margin-bottom: 2rem;">
+      <h1 style="font-size: 2.25rem; font-weight: 900;">Your Saved Wishlist</h1>
+      <p style="color: var(--text-secondary);">Keep track of luxury items to purchase later</p>
+    </div>
+
+    {% if wishlist_items %}
+    <div class="grid" style="grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));">
+      {% for item in wishlist_items %}
+      <div class="product-card">
+        <div class="product-media">
+          <img src="{{ item.product.primary_image_url }}" alt="{{ item.product.title }}" class="product-image">
+        </div>
+        <div class="product-content">
+          <div class="product-category">{{ item.product.category.name }}</div>
+          <a href="{% url 'products:detail' item.product.slug %}" class="product-title">{{ item.product.title }}</a>
+          <div class="product-price-row">
+            <span class="price-main">${{ item.product.effective_price }}</span>
+            <div class="flex gap-1">
+              <button class="btn btn-primary btn-sm" onclick="addToCart({{ item.product.id }}, 1)">Add to Cart</button>
+              <button class="btn btn-outline btn-sm" onclick="toggleWishlist({{ item.product.id }}, this); location.reload();" style="color: #EF4444;">&times;</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div style="padding: 4rem; text-align: center; background: var(--bg-card); border-radius: var(--radius-lg); border: 1px solid var(--border-color);">
+      <h2>No Saved Items In Your Wishlist</h2>
+      <p style="color: var(--text-muted); margin-top: 0.5rem;">Click the heart icon on any product to save it to your personal collection.</p>
+      <a href="{% url 'products:catalog' %}" class="btn btn-primary btn-sm" style="margin-top: 1.5rem;">Explore Catalog &rarr;</a>
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

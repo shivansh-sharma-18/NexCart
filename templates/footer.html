@@ -1,0 +1,62 @@
+{% load static %}
+<footer class="footer-main">
+  <div class="container">
+    <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 2.5rem; margin-bottom: 3rem;">
+      <!-- Brand & Bio -->
+      <div style="grid-column: span 1;">
+        <a href="{% url 'core:home' %}" class="logo-brand" style="color: white; margin-bottom: 1.25rem;">
+          <div class="logo-icon-badge">N</div>
+          <span>Nex<span class="logo-accent">Cart</span></span>
+        </a>
+        <p style="font-size: 0.9rem; color: #94A3B8; line-height: 1.6; max-width: 340px; margin-bottom: 1.5rem;">
+          NexCart is a next-generation luxury e-commerce ecosystem built for modern shoppers demanding speed, product quality, and high-performance design.
+        </p>
+        <div class="flex gap-2 flex-wrap">
+          <span style="font-size: 0.8rem; background: #1E293B; color: #CBD5E1; padding: 0.35rem 0.75rem; border-radius: var(--radius-sm); border: 1px solid #334155;">⚡ Express Dispatch</span>
+        </div>
+      </div>
+
+      <!-- Quick Navigation -->
+      <div>
+        <h4 style="color: white; font-size: 1rem; margin-bottom: 1.25rem; font-weight: 700;">Explore</h4>
+        <ul class="mega-item-list" style="display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.9rem;">
+          <li><a href="{% url 'products:catalog' %}" style="color: #94A3B8;">Product Catalog</a></li>
+          <li><a href="{% url 'core:about' %}" style="color: #94A3B8;">About NexCart</a></li>
+          <li><a href="{% url 'core:contact' %}" style="color: #94A3B8;">Concierge Support</a></li>
+          <li><a href="{% url 'products:catalog' %}?flash_sale=true" style="color: #94A3B8;">Flash Deals</a></li>
+        </ul>
+      </div>
+
+      <!-- User Account -->
+      <div>
+        <h4 style="color: white; font-size: 1rem; margin-bottom: 1.25rem; font-weight: 700;">Account</h4>
+        <ul class="mega-item-list" style="display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.9rem;">
+          <li><a href="{% url 'accounts:profile' %}" style="color: #94A3B8;">Order Tracking</a></li>
+          <li><a href="{% url 'wishlist:view' %}" style="color: #94A3B8;">Saved Wishlist</a></li>
+          <li><a href="{% url 'dashboard:index' %}" style="color: #94A3B8;">Seller Analytics</a></li>
+          <li><a href="{% url 'accounts:login' %}" style="color: #94A3B8;">Sign In / Join</a></li>
+        </ul>
+      </div>
+
+      <!-- VIP Club Newsletter -->
+      <div>
+        <h4 style="color: white; font-size: 1rem; margin-bottom: 0.5rem; font-weight: 700;">NexCart VIP Club</h4>
+        <p style="font-size: 0.85rem; color: #94A3B8; margin-bottom: 1rem;">Subscribe to unlock private drops, member discounts, and new releases.</p>
+        <form onsubmit="event.preventDefault(); showToast('Subscribed to NexCart VIP Club!', 'success');" class="flex gap-2">
+          <input type="email" required placeholder="Enter email address" style="flex: 1; padding: 0.6rem 0.85rem; border-radius: var(--radius-md); border: 1px solid #334155; background: #1E293B; color: white; font-size: 0.85rem;">
+          <button type="submit" class="btn btn-primary btn-sm">Join</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Bottom Copyright Row -->
+    <div class="flex-between flex-wrap gap-2" style="border-top: 1px solid #1E293B; padding-top: 1.5rem; font-size: 0.85rem; color: #64748B;">
+      <div>&copy; 2026 NexCart Technologies Inc. All rights reserved.</div>
+      <div class="flex gap-3">
+        <a href="{% url 'core:about' %}" style="color: #64748B;">Privacy Policy</a>
+        <a href="{% url 'core:about' %}" style="color: #64748B;">Terms of Service</a>
+        <a href="{% url 'core:contact' %}" style="color: #64748B;">Security Center</a>
+      </div>
+    </div>
+  </div>
+</footer>

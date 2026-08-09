@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}About Us — NexCart{% endblock %}
+
+{% block content %}
+<section class="section">
+  <div class="container" style="max-width: 900px;">
+    <div style="text-align: center; margin-bottom: 3.5rem;">
+      <span style="font-size: 0.8rem; font-weight: 800; color: var(--primary); text-transform: uppercase; letter-spacing: 0.05em;">Our Story</span>
+      <h1 style="font-size: 2.5rem; font-weight: 900; margin-top: 0.5rem;">Building the Future of E-Commerce</h1>
+      <p style="font-size: 1.1rem; color: var(--text-secondary); margin-top: 1rem; line-height: 1.6;">
+        NexCart was founded with a singular mission: to eliminate noisy marketplace clutter and introduce a high-performance shopping ecosystem with verified product authenticity, instant delivery, and sleek visual design.
+      </p>
+    </div>
+
+    <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); margin-bottom: 4rem;">
+      <div class="product-card" style="padding: 2rem;">
+        <h3 style="color: var(--primary); font-size: 1.25rem; font-weight: 800; margin-bottom: 0.75rem;">Verified Excellence</h3>
+        <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.5;">Every product catalog item undergoes strict inspection to guarantee genuine craftsmanship and zero counterfeit goods.</p>
+      </div>
+
+      <div class="product-card" style="padding: 2rem;">
+        <h3 style="color: var(--secondary); font-size: 1.25rem; font-weight: 800; margin-bottom: 0.75rem;">Automated Handling</h3>
+        <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.5;">Our smart warehouse dispatch nodes process incoming orders quickly upon checkout confirmation.</p>
+      </div>
+
+      <div class="product-card" style="padding: 2rem;">
+        <h3 style="color: var(--accent); font-size: 1.25rem; font-weight: 800; margin-bottom: 0.75rem;">Sustainable Footprint</h3>
+        <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.5;">Recyclable packaging with carbon-neutral transit options for every delivery.</p>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

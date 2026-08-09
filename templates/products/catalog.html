@@ -1,0 +1,161 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Explore Catalog — NexCart{% endblock %}
+
+{% block content %}
+<section class="section">
+  <div class="container">
+    <!-- Catalog Header -->
+    <div style="margin-bottom: 2rem;">
+      <h1 style="font-size: 2.25rem; font-weight: 900;">Explore NexCart Catalog</h1>
+      <p style="color: var(--text-secondary);">Showing {{ total_count }} verified items{% if selected_category %} in {{ selected_category.name }}{% endif %}</p>
+    </div>
+
+    <div class="catalog-grid-layout">
+      <!-- 1. Filter Sidebar -->
+      <aside class="filter-sidebar">
+        <form method="GET" action="{% url 'products:catalog' %}" id="filter-form">
+          <!-- Search input preserved -->
+          {% if query %}
+          <input type="hidden" name="q" value="{{ query }}">
+          {% endif %}
+
+          <!-- Categories Filter -->
+          <div class="filter-group">
+            <div class="filter-title">Categories</div>
+            <ul class="mega-item-list">
+              <li>
+                <a href="{% url 'products:catalog' %}" style="font-weight: {% if not selected_category %}700{% else %}400{% endif %}; color: {% if not selected_category %}var(--primary){% else %}inherit{% endif %};">
+                  All Collections
+                </a>
+              </li>
+              {% for cat in categories %}
+              <li>
+                <a href="{% url 'products:catalog' %}?category={{ cat.slug }}" style="font-weight: {% if selected_category.slug == cat.slug %}700{% else %}400{% endif %}; color: {% if selected_category.slug == cat.slug %}var(--primary){% else %}inherit{% endif %};">
+                  {{ cat.name }}
+                </a>
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+
+          <!-- Price Range Filter -->
+          <div class="filter-group">
+            <div class="filter-title">Price Range ($)</div>
+            <div class="price-range-inputs">
+              <input type="number" name="min_price" placeholder="Min $" value="{{ request.GET.min_price }}">
+              <span>-</span>
+              <input type="number" name="max_price" placeholder="Max $" value="{{ request.GET.max_price }}">
+            </div>
+          </div>
+
+          <!-- Rating Filter -->
+          <div class="filter-group">
+            <div class="filter-title">Minimum Rating</div>
+            <div style="display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.85rem;">
+              <label><input type="radio" name="rating" value="4.5" {% if request.GET.rating == '4.5' %}checked{% endif %} onchange="this.form.submit()"> 4.5★ & above</label>
+              <label><input type="radio" name="rating" value="4.0" {% if request.GET.rating == '4.0' %}checked{% endif %} onchange="this.form.submit()"> 4.0★ & above</label>
+              <label><input type="radio" name="rating" value="3.0" {% if request.GET.rating == '3.0' %}checked{% endif %} onchange="this.form.submit()"> 3.0★ & above</label>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div style="display: flex; gap: 0.5rem;">
+            <button type="submit" class="btn btn-primary btn-sm" style="flex: 1;">Apply</button>
+            <a href="{% url 'products:catalog' %}" class="btn btn-outline btn-sm">Clear</a>
+          </div>
+        </form>
+      </aside>
+
+      <!-- 2. Product Grid Column -->
+      <div>
+        <!-- Toolbar -->
+        <div class="flex-between flex-wrap gap-2" style="margin-bottom: 1.5rem; background: var(--bg-card); padding: 0.75rem 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+          <div style="font-size: 0.85rem; color: var(--text-secondary);">
+            Page {{ products.number }} of {{ products.paginator.num_pages }}
+          </div>
+          
+          <form method="GET" style="display: flex; align-items: center; gap: 0.5rem;">
+            {% if selected_category %}<input type="hidden" name="category" value="{{ selected_category.slug }}">{% endif %}
+            {% if query %}<input type="hidden" name="q" value="{{ query }}">{% endif %}
+            <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">Sort:</span>
+            <select name="sort" onchange="this.form.submit()" style="padding: 0.35rem 0.75rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color); background: var(--bg-subtle); color: var(--text-primary); font-size: 0.85rem;">
+              <option value="newest" {% if sort_option == 'newest' %}selected{% endif %}>Newest Arrivals</option>
+              <option value="price_low" {% if sort_option == 'price_low' %}selected{% endif %}>Price: Low to High</option>
+              <option value="price_high" {% if sort_option == 'price_high' %}selected{% endif %}>Price: High to Low</option>
+              <option value="rating" {% if sort_option == 'rating' %}selected{% endif %}>Highest Rated</option>
+            </select>
+          </form>
+        </div>
+
+        <!-- Cards Grid -->
+        <div class="grid" style="grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));">
+          {% for product in products %}
+          <div class="product-card">
+            <div class="product-media">
+              <img src="{{ product.primary_image_url }}" alt="{{ product.title }}" class="product-image">
+              <div class="product-badge-group">
+                {% if product.discount_price %}
+                <span class="tag-badge badge-sale">-{{ product.discount_percent }}% OFF</span>
+                {% endif %}
+                {% if product.is_featured %}
+                <span class="tag-badge badge-featured">Featured</span>
+                {% endif %}
+              </div>
+              <div class="card-actions-hover">
+                <button class="icon-btn" onclick="openQuickView({{ product.id }})" title="Quick View">
+                  <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                </button>
+                <button class="icon-btn" onclick="toggleWishlist({{ product.id }}, this)" title="Add to Wishlist">
+                  <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                </button>
+              </div>
+            </div>
+            <div class="product-content">
+              <div class="product-category">{{ product.category.name }}</div>
+              <a href="{% url 'products:detail' product.slug %}" class="product-title">{{ product.title }}</a>
+              <div class="product-rating">
+                <span>★</span>
+                <span style="font-weight: 700; color: var(--text-primary);">{{ product.rating_avg }}</span>
+                <span style="color: var(--text-muted);">({{ product.rating_count }})</span>
+              </div>
+              <div class="product-price-row">
+                <div>
+                  <span class="price-main">${{ product.effective_price }}</span>
+                  {% if product.discount_price %}
+                  <span class="price-original">${{ product.price }}</span>
+                  {% endif %}
+                </div>
+                <button class="btn btn-primary btn-sm" onclick="addToCart({{ product.id }}, 1)">Add to Cart</button>
+              </div>
+            </div>
+          </div>
+          {% empty %}
+          <div style="grid-column: 1 / -1; padding: 4rem; text-align: center; background: var(--bg-card); border-radius: var(--radius-lg); border: 1px solid var(--border-color);">
+            <h3>No products found matching your search filters.</h3>
+            <p style="color: var(--text-muted); margin-top: 0.5rem;">Try modifying your search query or price range.</p>
+            <a href="{% url 'products:catalog' %}" class="btn btn-outline btn-sm" style="margin-top: 1rem;">Reset Filters</a>
+          </div>
+          {% endfor %}
+        </div>
+
+        <!-- Pagination Controls -->
+        {% if products.has_other_pages %}
+        <div class="flex-center gap-2" style="margin-top: 3rem;">
+          {% if products.has_previous %}
+          <a href="?page={{ products.previous_page_number }}{% if selected_category %}&category={{ selected_category.slug }}{% endif %}{% if query %}&q={{ query }}{% endif %}" class="btn btn-outline btn-sm">&larr; Previous</a>
+          {% endif %}
+          
+          <span style="font-weight: 600; font-size: 0.9rem;">Page {{ products.number }} of {{ products.paginator.num_pages }}</span>
+
+          {% if products.has_next %}
+          <a href="?page={{ products.next_page_number }}{% if selected_category %}&category={{ selected_category.slug }}{% endif %}{% if query %}&q={{ query }}{% endif %}" class="btn btn-outline btn-sm">Next &rarr;</a>
+          {% endif %}
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

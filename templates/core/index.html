@@ -1,0 +1,251 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}NexCart — Everything you want. One smarter destination.{% endblock %}
+
+{% block content %}
+<!-- 1. EDITORIAL HERO STAGE -->
+<section class="hero-stage">
+  <div class="container">
+    <div class="hero-grid">
+      <!-- Left Column Content -->
+      <div>
+        <span class="hero-eyebrow">
+          <span>⚡</span> THE NEXT WAY TO SHOP
+        </span>
+        <h1 class="text-hero" style="margin-bottom: 1.5rem; color: var(--text-primary);">
+          Everything you want.<br>
+          <span style="color: var(--primary);">One smarter destination.</span>
+        </h1>
+        <p class="text-body" style="font-size: 1.15rem; margin-bottom: 2.25rem; max-width: 540px;">
+          Discover a handpicked ecosystem of luxury tech, precision acoustic equipment, designer fashion, and minimalist living space essentials with guaranteed 2-day delivery.
+        </p>
+        <div class="flex gap-3 flex-wrap">
+          <a href="{% url 'products:catalog' %}" class="btn btn-primary btn-lg">Explore Collection &rarr;</a>
+          <a href="{% url 'products:catalog' %}?flash_sale=true" class="btn btn-outline btn-lg">View Deals</a>
+        </div>
+      </div>
+
+      <!-- Right Column Visual Stage with Floating Badges -->
+      <div class="hero-visual-container">
+        <!-- Floating Accent Badges -->
+        <div class="floating-pill floating-pill-1">
+          <div style="width: 32px; height: 32px; border-radius: 50%; background: var(--secondary-light); color: var(--secondary); display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">✓</div>
+          <div>
+            <div style="font-size: 0.85rem; font-weight: 800;">Free Delivery</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">Orders over $150</div>
+          </div>
+        </div>
+
+        <div class="floating-pill floating-pill-2">
+          <div style="color: #F59E0B; font-weight: 900; font-size: 1.1rem;">★ 4.9</div>
+          <div>
+            <div style="font-size: 0.85rem; font-weight: 800;">Verified Ratings</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">Handpicked Catalog</div>
+          </div>
+        </div>
+
+        <!-- Main Product Visual Card -->
+        <div class="hero-visual-card">
+          <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=1000&q=80" alt="NexCart Flagship Headphones" style="width: 100%; height: 480px; object-fit: cover;">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 2. TRUST BAR BANNER -->
+<section style="background: var(--bg-card); border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); padding: 2.25rem 0;">
+  <div class="container">
+    <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 2rem;">
+      <div class="trust-item">
+        <div class="trust-icon">🚀</div>
+        <div>
+          <div style="font-weight: 800; font-size: 0.95rem; color: var(--text-primary);">Free Global Express</div>
+          <div style="font-size: 0.85rem; color: var(--text-secondary);">On all orders over $150</div>
+        </div>
+      </div>
+
+      <div class="trust-item">
+        <div class="trust-icon" style="background: var(--secondary-light); color: var(--secondary);">🛡️</div>
+        <div>
+          <div style="font-weight: 800; font-size: 0.95rem; color: var(--text-primary);">Authentic Guarantee</div>
+          <div style="font-size: 0.85rem; color: var(--text-secondary);">Directly from brand artisans</div>
+        </div>
+      </div>
+
+      <div class="trust-item">
+        <div class="trust-icon" style="background: var(--accent-light); color: var(--accent);">🔄</div>
+        <div>
+          <div style="font-weight: 800; font-size: 0.95rem; color: var(--text-primary);">30-Day Hassle Free</div>
+          <div style="font-size: 0.85rem; color: var(--text-secondary);">Instant return window</div>
+        </div>
+      </div>
+
+      <div class="trust-item">
+        <div class="trust-icon" style="background: rgba(129, 140, 248, 0.12); color: #6366F1;">💬</div>
+        <div>
+          <div style="font-weight: 800; font-size: 0.95rem; color: var(--text-primary);">24/7 Concierge</div>
+          <div style="font-size: 0.85rem; color: var(--text-secondary);">Dedicated support line</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3. FEATURED EDITORIAL CATEGORIES -->
+<section class="section">
+  <div class="container">
+    <div class="flex-between flex-wrap gap-2" style="margin-bottom: 2.5rem;">
+      <div>
+        <span style="font-size: 0.825rem; font-weight: 800; color: var(--primary); text-transform: uppercase; letter-spacing: 0.08em;">Curated Departments</span>
+        <h2 class="text-heading" style="margin-top: 0.35rem;">Featured Categories</h2>
+      </div>
+      <a href="{% url 'products:catalog' %}" class="btn btn-outline btn-sm">Explore All Categories &rarr;</a>
+    </div>
+
+    <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));">
+      {% for category in categories %}
+      <a href="{% url 'products:catalog' %}?category={{ category.slug }}" class="category-editorial-card">
+        <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=800&q=80" alt="{{ category.name }}" class="category-bg-image">
+        <div class="category-overlay"></div>
+        <div class="category-editorial-content">
+          <span style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; background: rgba(255,255,255,0.2); backdrop-filter: blur(8px); padding: 0.2rem 0.6rem; border-radius: var(--radius-full); margin-bottom: 0.5rem; display: inline-block;">COLLECTION</span>
+          <h3 style="font-size: 1.5rem; font-weight: 900; color: white;">{{ category.name }}</h3>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- 4. TRENDING NOW PRODUCT GRID -->
+<section class="section" style="background: var(--bg-card); border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color);">
+  <div class="container">
+    <div class="flex-between flex-wrap gap-2" style="margin-bottom: 2.5rem;">
+      <div>
+        <span style="font-size: 0.825rem; font-weight: 800; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em;">Handpicked Flagships</span>
+        <h2 class="text-heading" style="margin-top: 0.35rem;">Trending Now</h2>
+      </div>
+      <a href="{% url 'products:catalog' %}" class="btn btn-outline btn-sm">View Full Storefront &rarr;</a>
+    </div>
+
+    <div class="grid" style="grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));">
+      {% for product in featured_products %}
+      <div class="product-card">
+        <div class="product-media">
+          <img src="{{ product.primary_image_url }}" alt="{{ product.title }}" class="product-image">
+          <div class="product-badge-group">
+            {% if product.discount_price %}
+            <span class="tag-badge badge-sale">-{{ product.discount_percent }}% OFF</span>
+            {% endif %}
+            {% if product.is_featured %}
+            <span class="tag-badge badge-featured">Featured</span>
+            {% endif %}
+          </div>
+          <div class="card-actions-hover">
+            <button class="icon-btn" onclick="openQuickView({{ product.id }})" title="Quick View">
+              <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+            </button>
+            <button class="icon-btn" onclick="toggleWishlist({{ product.id }}, this)" title="Add to Wishlist">
+              <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+            </button>
+          </div>
+        </div>
+        <div class="product-content">
+          <div class="product-category">{{ product.category.name }}</div>
+          <a href="{% url 'products:detail' product.slug %}" class="product-title">{{ product.title }}</a>
+          <div class="product-rating">
+            <span>★</span>
+            <span style="font-weight: 700; color: var(--text-primary);">{{ product.rating_avg }}</span>
+            <span style="color: var(--text-muted);">({{ product.rating_count }})</span>
+          </div>
+          <div class="product-price-row">
+            <div>
+              <span class="price-main">${{ product.effective_price }}</span>
+              {% if product.discount_price %}
+              <span class="price-original">${{ product.price }}</span>
+              {% endif %}
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="addToCart({{ product.id }}, 1)">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- 5. LIMITED TIME DEALS COUNTDOWN SECTION -->
+<section class="section">
+  <div class="container">
+    <div class="product-card" style="background: linear-gradient(135deg, var(--primary-dark) 0%, #312E81 50%, var(--primary) 100%); color: white; padding: 3.5rem; border: none; box-shadow: var(--shadow-lg);">
+      <div class="grid" style="grid-template-columns: 1fr 340px; gap: 3rem; align-items: center;">
+        <div>
+          <span style="background: rgba(255,255,255,0.2); backdrop-filter: blur(10px); color: white; font-weight: 800; font-size: 0.8rem; padding: 0.35rem 0.85rem; border-radius: var(--radius-full); text-transform: uppercase; letter-spacing: 0.08em; display: inline-block; margin-bottom: 1rem;">FLASH DEALS</span>
+          <h2 style="font-size: 2.8rem; font-weight: 900; color: white; line-height: 1.1; margin-bottom: 1rem;">NexCart VIP Flash Sale drops ending soon</h2>
+          <p style="font-size: 1.1rem; color: rgba(255,255,255,0.85); margin-bottom: 2rem;">Save up to 40% on verified flagship audio equipment and smart wearables.</p>
+          <a href="{% url 'products:catalog' %}?flash_sale=true" class="btn btn-primary btn-lg" style="background: white; color: var(--primary-dark);">Shop Flash Deals &rarr;</a>
+        </div>
+
+        <!-- Timer Grid Box -->
+        <div style="background: rgba(255,255,255,0.1); backdrop-filter: blur(14px); padding: 2rem; border-radius: var(--radius-xl); border: 1px solid rgba(255,255,255,0.2); text-align: center;">
+          <div style="font-size: 0.85rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 1.25rem;">TIME REMAINING</div>
+          <div class="flex-center gap-2">
+            <div style="background: white; color: var(--primary-dark); border-radius: var(--radius-md); padding: 0.85rem 1.1rem; min-width: 70px;">
+              <div id="cd-hours" style="font-family: 'Manrope', sans-serif; font-size: 1.8rem; font-weight: 900;">14</div>
+              <div style="font-size: 0.65rem; font-weight: 800; text-transform: uppercase;">Hours</div>
+            </div>
+            <span style="font-size: 1.8rem; font-weight: 900;">:</span>
+            <div style="background: white; color: var(--primary-dark); border-radius: var(--radius-md); padding: 0.85rem 1.1rem; min-width: 70px;">
+              <div id="cd-mins" style="font-family: 'Manrope', sans-serif; font-size: 1.8rem; font-weight: 900;">32</div>
+              <div style="font-size: 0.65rem; font-weight: 800; text-transform: uppercase;">Mins</div>
+            </div>
+            <span style="font-size: 1.8rem; font-weight: 900;">:</span>
+            <div style="background: white; color: var(--primary-dark); border-radius: var(--radius-md); padding: 0.85rem 1.1rem; min-width: 70px;">
+              <div id="cd-secs" style="font-family: 'Manrope', sans-serif; font-size: 1.8rem; font-weight: 900;">45</div>
+              <div style="font-size: 0.65rem; font-weight: 800; text-transform: uppercase;">Secs</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 6. WHY NEXCART SECTION -->
+<section class="section" style="background: var(--bg-card); border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color);">
+  <div class="container">
+    <div style="text-align: center; max-width: 640px; margin: 0 auto 3.5rem auto;">
+      <span style="font-size: 0.825rem; font-weight: 800; color: var(--primary); text-transform: uppercase; letter-spacing: 0.08em;">THE NEXCART DIFFERENCE</span>
+      <h2 class="text-heading" style="margin-top: 0.35rem;">Why shop with us</h2>
+    </div>
+
+    <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));">
+      <div style="padding: 2rem; background: var(--bg-subtle); border-radius: var(--radius-xl); border: 1px solid var(--border-color);">
+        <div style="width: 3.25rem; height: 3.25rem; border-radius: var(--radius-md); background: var(--primary-light); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 1.25rem;">✨</div>
+        <h3 style="font-size: 1.25rem; font-weight: 800; margin-bottom: 0.5rem;">Curated Excellence</h3>
+        <p style="color: var(--text-secondary); font-size: 0.95rem;">Every item in our catalog undergoes rigorous inspection to ensure top craftsmanship.</p>
+      </div>
+
+      <div style="padding: 2rem; background: var(--bg-subtle); border-radius: var(--radius-xl); border: 1px solid var(--border-color);">
+        <div style="width: 3.25rem; height: 3.25rem; border-radius: var(--radius-md); background: var(--secondary-light); color: var(--secondary); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 1.25rem;">🚀</div>
+        <h3 style="font-size: 1.25rem; font-weight: 800; margin-bottom: 0.5rem;">Express Fulfillment</h3>
+        <p style="color: var(--text-secondary); font-size: 0.95rem;">Orders are processed quickly upon checkout confirmation.</p>
+      </div>
+
+      <div style="padding: 2rem; background: var(--bg-subtle); border-radius: var(--radius-xl); border: 1px solid var(--border-color);">
+        <div style="width: 3.25rem; height: 3.25rem; border-radius: var(--radius-md); background: var(--accent-light); color: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 1.25rem;">🛡️</div>
+        <h3 style="font-size: 1.25rem; font-weight: 800; margin-bottom: 0.5rem;">Buyer Protection</h3>
+        <p style="color: var(--text-secondary); font-size: 0.95rem;">Full 30-day money back guarantee with extended warranty coverage.</p>
+      </div>
+
+      <div style="padding: 2rem; background: var(--bg-subtle); border-radius: var(--radius-xl); border: 1px solid var(--border-color);">
+        <div style="width: 3.25rem; height: 3.25rem; border-radius: var(--radius-md); background: rgba(99, 102, 241, 0.12); color: #6366F1; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 1.25rem;">💬</div>
+        <h3 style="font-size: 1.25rem; font-weight: 800; margin-bottom: 0.5rem;">Dedicated Support</h3>
+        <p style="color: var(--text-secondary); font-size: 0.95rem;">Our customer concierge team is available to assist you with order inquiries.</p>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
